@@ -10,7 +10,7 @@ void main() {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.orange,
         ),
         home: const MyApp(),
       ),
