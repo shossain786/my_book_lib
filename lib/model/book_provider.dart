@@ -14,8 +14,7 @@ class BookProvider extends ChangeNotifier {
   }
 
   void toggleFavorite(int index) {
-    // _books[index].isFavorite = !_books[index].isFavorite;
-    _books[index].isFavorite = true;
+    _books[index].isFavorite = !_books[index].isFavorite;
     notifyListeners();
   }
 
