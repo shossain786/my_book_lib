@@ -92,7 +92,11 @@ class _AddBookFormState extends State<AddBookForm> {
       bookProvider.addBook(Book(name: name, author: author, path: _filePath));
       Navigator.pop(context);
     } else {
-      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Make sure to select pdf file, name and auther name!'),
+        ),
+      );
     }
   }
 }
