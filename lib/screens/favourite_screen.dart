@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_book_lib/model/book_provider.dart';
+import 'package:my_book_lib/screens/pdf_viewer_screen.dart';
 import 'package:provider/provider.dart';
 
 class FavoritesScreen extends StatelessWidget {
@@ -21,7 +22,15 @@ class FavoritesScreen extends StatelessWidget {
           return ListTile(
             title: Text(favoriteBooks[index].name),
             subtitle: Text(favoriteBooks[index].author),
-            // You can add more details or customize ListTile as needed
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      PdfViewerScreen(pdfPath: bookProvider.books[index].path),
+                ),
+              );
+            },
           );
         },
       ),
