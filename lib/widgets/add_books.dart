@@ -41,32 +41,34 @@ class _AddBookFormState extends State<AddBookForm> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              _openFilePicker(context);
-            },
-            child: const Text('Select PDF File'),
-          ),
-          const SizedBox(height: 16.0),
-          TextField(
-            controller: _nameController,
-            decoration: const InputDecoration(labelText: 'Book Name'),
-          ),
-          TextField(
-            controller: _authorController,
-            decoration: const InputDecoration(labelText: 'Author Name'),
-          ),
-          const SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: () {
-              _addBook(context);
-            },
-            child: const Text('Add Book'),
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                _openFilePicker(context);
+              },
+              child: const Text('Select PDF File'),
+            ),
+            const SizedBox(height: 16.0),
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(labelText: 'Book Name'),
+            ),
+            TextField(
+              controller: _authorController,
+              decoration: const InputDecoration(labelText: 'Author Name'),
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                _addBook(context);
+              },
+              child: const Text('Add Book'),
+            ),
+          ],
+        ),
       ),
     );
   }
