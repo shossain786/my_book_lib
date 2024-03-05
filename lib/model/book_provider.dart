@@ -13,6 +13,12 @@ class BookProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> deleteBook(int index) async {
+    _books.removeAt(index);
+    await saveBooks();
+    notifyListeners();
+  }
+
   void toggleFavorite(int index) {
     _books[index].isFavorite = !_books[index].isFavorite;
     saveBooks();
