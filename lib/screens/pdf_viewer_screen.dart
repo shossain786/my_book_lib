@@ -36,7 +36,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       appBar: AppBar(
         title: const Text(
           'PDF Viewer',
-          // style: TextStyle(color: nightMode ? Colors.white : Colors.black),
         ),
         foregroundColor: nightMode ? Colors.white : Colors.black,
         backgroundColor: nightMode ? Colors.black : Colors.white,

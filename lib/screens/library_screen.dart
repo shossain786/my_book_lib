@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_book_lib/model/book.dart';
 import 'package:my_book_lib/widgets/add_books.dart';
 import 'package:my_book_lib/model/book_provider.dart';
@@ -38,20 +39,30 @@ class _LibraryScreenState extends State<LibraryScreen> {
           return ListView.builder(
             itemCount: bookProvider.books.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(bookProvider.books[index].name),
-                subtitle: Text(bookProvider.books[index].author),
-                trailing: buildPopupMenuButton(
-                    bookProvider.books[index], bookProvider, index),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PdfViewerScreen(
-                          pdfPath: bookProvider.books[index].path),
+              return Padding(
+                padding: const EdgeInsets.only(left: 2.0, right: 2.0),
+                child: Card(
+                  elevation: 5.0,
+                  shadowColor: Colors.greenAccent,
+                  child: ListTile(
+                    title: Text(bookProvider.books[index].name),
+                    subtitle: Text(bookProvider.books[index].author),
+                    leading: const CircleAvatar(
+                      child: FaIcon(FontAwesomeIcons.bookQuran),
                     ),
-                  );
-                },
+                    trailing: buildPopupMenuButton(
+                        bookProvider.books[index], bookProvider, index),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PdfViewerScreen(
+                              pdfPath: bookProvider.books[index].path),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               );
             },
           );
