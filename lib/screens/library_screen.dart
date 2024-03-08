@@ -45,13 +45,16 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   elevation: 5.0,
                   shadowColor: Colors.greenAccent,
                   child: ListTile(
-                    title: Text(bookProvider.books[index].name),
+                    title: Text(
+                      bookProvider.books[index].name,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     subtitle: Text(bookProvider.books[index].author),
                     leading: const CircleAvatar(
                       child: FaIcon(FontAwesomeIcons.bookQuran),
                     ),
                     trailing: buildPopupMenuButton(
-                        bookProvider.books[index], bookProvider, index),
+                        bookProvider.books[index], bookProvider),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -78,19 +81,18 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 
   void _addBooks() {
-    showModalBottomSheet(
-        context: context, builder: (context) => const AddBookScreen());
+    showDialog(context: context, builder: (context) => const AddBookScreen());
   }
 
-  Widget buildPopupMenuButton(Book book, BookProvider bookProvider, int index) {
+  Widget buildPopupMenuButton(Book book, BookProvider bookProvider) {
     return PopupMenuButton<String>(
       onSelected: (String value) {
         if (value == 'edit') {
           // _editBook(context, bookProvider, book);
         } else if (value == 'delete') {
-          _deleteBook(context, bookProvider, book, index);
+          _deleteBook(context, bookProvider, book);
         } else if (value == 'addToFavorites') {
-          _addToFavorites(context, bookProvider, book, index);
+          _addToFavorites(context, bookProvider, book);
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -111,20 +113,18 @@ class _LibraryScreenState extends State<LibraryScreen> {
         PopupMenuItem<String>(
           value: 'addToFavorites',
           child: ListTile(
-            leading: bookProvider.books[index].isFavorite
+            leading: book.isFavorite
                 ? const Icon(Icons.favorite)
                 : const Icon(Icons.favorite_border),
-            title: Text(bookProvider.books[index].isFavorite
-                ? 'Remove from Favorites'
-                : 'Add to Favorites'),
+            title: Text(
+                book.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'),
           ),
         ),
       ],
     );
   }
 
-  void _deleteBook(
-      BuildContext context, BookProvider bookProvider, Book book, int index) {
+  void _deleteBook(BuildContext context, BookProvider bookProvider, Book book) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -139,7 +139,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
           ),
           TextButton(
             onPressed: () {
-              bookProvider.deleteBook(index);
+              bookProvider.deleteBook(book.id);
               Navigator.pop(context);
             },
             child: const Text('Delete'),
@@ -150,7 +150,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 
   void _addToFavorites(
-      BuildContext context, BookProvider bookProvider, Book book, int index) {
-    bookProvider.toggleFavorite(index);
+      BuildContext context, BookProvider bookProvider, Book book) {
+    bookProvider.toggleFavorite(book.id);
   }
 }

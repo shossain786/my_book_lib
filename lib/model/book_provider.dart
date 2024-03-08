@@ -13,16 +13,19 @@ class BookProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteBook(int index) async {
-    _books.removeAt(index);
+  Future<void> deleteBook(String id) async {
+    _books.removeWhere((book) => book.id == id);
     await saveBooks();
     notifyListeners();
   }
 
-  void toggleFavorite(int index) {
-    _books[index].isFavorite = !_books[index].isFavorite;
-    saveBooks();
-    notifyListeners();
+  void toggleFavorite(String id) {
+    int index = _books.indexWhere((book) => book.id == id);
+    if (index != -1) {
+      _books[index].isFavorite = !_books[index].isFavorite;
+      saveBooks();
+      notifyListeners();
+    }
   }
 
   Future<void> saveBooks() async {
@@ -32,7 +35,7 @@ class BookProvider extends ChangeNotifier {
       _books
           .map(
             (book) =>
-                "${book.name}|${book.author}|${book.path}|${book.isFavorite ? '1' : '0'}",
+                "${book.id}|${book.name}|${book.author}|${book.path}|${book.isFavorite ? '1' : '0'}",
           )
           .toList(),
     );
@@ -45,13 +48,15 @@ class BookProvider extends ChangeNotifier {
       _books = bookStrings.map((bookString) {
         List<String> parts = bookString.split('|');
         return Book(
-          name: parts[0],
-          author: parts[1],
-          path: parts[2],
-          isFavorite: parts[3] == '1',
+          id: parts[0],
+          name: parts[1],
+          author: parts[2],
+          path: parts[3],
+          isFavorite: parts[4] == '1',
         );
       }).toList();
       notifyListeners();
     }
+    debugPrint('Books found in the database: ${_books[0].name}');
   }
 }

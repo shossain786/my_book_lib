@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:my_book_lib/model/book.dart';
@@ -91,7 +93,11 @@ class _AddBookFormState extends State<AddBookForm> {
     String author = _authorController.text;
     if (name.isNotEmpty && author.isNotEmpty && _filePath.isNotEmpty) {
       final bookProvider = Provider.of<BookProvider>(context, listen: false);
-      bookProvider.addBook(Book(name: name, author: author, path: _filePath));
+      bookProvider.addBook(Book(
+          name: name,
+          author: author,
+          path: _filePath,
+          id: _generateRandomID()));
       Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -100,5 +106,13 @@ class _AddBookFormState extends State<AddBookForm> {
         ),
       );
     }
+  }
+
+  static String _generateRandomID() {
+    Random random = Random();
+    int id = random.nextInt(900000) + 100000;
+    debugPrint(
+        'ID generated: ------------------Add Book------------------- ${id.toString()}');
+    return id.toString();
   }
 }

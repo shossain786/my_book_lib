@@ -35,8 +35,8 @@ class FavoritesScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PdfViewerScreen(
-                          pdfPath: bookProvider.books[index].path),
+                      builder: (context) =>
+                          PdfViewerScreen(pdfPath: favoriteBooks[index].path),
                     ),
                   );
                 },
