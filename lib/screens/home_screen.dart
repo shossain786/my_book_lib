@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_book_lib/model/book_provider.dart';
 import 'package:my_book_lib/screens/pdf_viewer_screen.dart';
 import 'package:my_book_lib/widgets/bottom_nav_bar.dart';
@@ -72,7 +73,7 @@ class LibraryBooksSection extends StatelessWidget {
               children: [
                 const CircleAvatar(
                   radius: 30,
-                  child: Icon(Icons.book),
+                  child: Icon(FontAwesomeIcons.book),
                 ),
                 const SizedBox(height: 8),
                 Text(

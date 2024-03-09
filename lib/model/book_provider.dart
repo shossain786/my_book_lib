@@ -4,8 +4,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class BookProvider extends ChangeNotifier {
   List<Book> _books = [];
-
   List<Book> get books => _books;
+
+  BookProvider() {
+    loadBooks();
+  }
 
   Future<void> addBook(Book book) async {
     _books.add(book);
