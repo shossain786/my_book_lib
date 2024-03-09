@@ -27,17 +27,17 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
         BottomNavigationBarItem(
           icon: Icon(FontAwesomeIcons.book),
           label: 'My Library',
-          backgroundColor: Colors.black87,
+          backgroundColor: Color.fromRGBO(53, 0, 0, 0.974),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.favorite),
           label: 'Favourite Books',
-          backgroundColor: Colors.black87,
+          backgroundColor: Color.fromRGBO(53, 0, 0, 0.974),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.book_online),
           label: 'Dilchasp Waqiat',
-          backgroundColor: Colors.black87,
+          backgroundColor: Color.fromRGBO(53, 0, 0, 0.974),
         ),
       ],
     );
