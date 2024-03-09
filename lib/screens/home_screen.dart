@@ -13,36 +13,40 @@ class MyApp extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Library App'),
       ),
-      body: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Library Books',
-              style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
+      body: const SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Library Books',
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: LibraryBooksSection(),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Favorite Books',
-              style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
+            LibraryBooksSection(),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Favorite Books',
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: FavoriteBooksSection(),
-          ),
-        ],
+            SizedBox(
+              height: 300,
+              child: FavoriteBooksSection(),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: const SafeArea(child: MyBottomNavBar()),
     );
@@ -57,52 +61,57 @@ class LibraryBooksSection extends StatelessWidget {
     final bookProvider = Provider.of<BookProvider>(context);
     final libraryBooks = bookProvider.books.take(5).toList();
 
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: libraryBooks.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PdfViewerScreen(
-                    pdfPath: libraryBooks[index].path,
+    return SizedBox(
+      height: 200,
+      child: ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: libraryBooks.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PdfViewerScreen(
+                      pdfPath: libraryBooks[index].path,
+                      book: libraryBooks[index],
+                    ),
                   ),
-                ),
-              );
-            },
-            child: Column(
-              children: [
-                Image.asset(
-                  // 'assets/${libraryBooks[index].imagePath}',
-                  'assets/book.png',
-                  width: 100,
-                  height: 100,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  libraryBooks[index].name.length > 10
-                      ? '${libraryBooks[index].name.substring(0, 10)}...'
-                      : libraryBooks[index].name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                );
+              },
+              child: Column(
+                children: [
+                  Image.asset(
+                    // 'assets/${libraryBooks[index].imagePath}',
+                    'assets/book.png',
+                    width: 100,
+                    height: 100,
                   ),
-                ),
-                Text(
-                  libraryBooks[index].author,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontWeight: FontWeight.w400),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  Text(
+                    libraryBooks[index].name.length > 10
+                        ? '${libraryBooks[index].name.substring(0, 10)}...'
+                        : libraryBooks[index].name,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    libraryBooks[index].author,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontWeight: FontWeight.w400),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
@@ -116,33 +125,38 @@ class FavoriteBooksSection extends StatelessWidget {
     final favoriteBooks =
         bookProvider.books.where((book) => book.isFavorite).take(5).toList();
 
-    return ListView.builder(
-      itemCount: favoriteBooks.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(favoriteBooks[index].name),
-          subtitle: Text(favoriteBooks[index].author),
-          leading: Column(
-            children: [
-              Image.asset(
-                'assets/Fav_book.png',
-                width: 60,
-                height: 50,
-              ),
-            ],
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PdfViewerScreen(
-                  pdfPath: favoriteBooks[index].path,
+    return SizedBox(
+      height: 200,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: favoriteBooks.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(favoriteBooks[index].name),
+            subtitle: Text(favoriteBooks[index].author),
+            leading: Column(
+              children: [
+                Image.asset(
+                  'assets/Fav_book.png',
+                  width: 60,
+                  height: 50,
                 ),
-              ),
-            );
-          },
-        );
-      },
+              ],
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PdfViewerScreen(
+                    pdfPath: favoriteBooks[index].path,
+                    book: favoriteBooks[index],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

@@ -4,6 +4,8 @@ class Book {
   final String author;
   final String path;
   bool isFavorite;
+  int timesOpened;
+  int totalReadingTime;
 
   Book({
     required this.name,
@@ -11,5 +13,7 @@ class Book {
     required this.path,
     this.isFavorite = false,
     required this.id,
+    this.timesOpened = 0,
+    this.totalReadingTime = 0,
   });
 }

@@ -3,11 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:my_book_lib/model/book.dart';
 
 class PdfViewerScreen extends StatefulWidget {
   final String pdfPath;
+  final Book book;
 
-  const PdfViewerScreen({Key? key, required this.pdfPath}) : super(key: key);
+  const PdfViewerScreen({Key? key, required this.pdfPath, required this.book})
+      : super(key: key);
 
   @override
   _PdfViewerScreenState createState() => _PdfViewerScreenState();
@@ -20,6 +23,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   late TextEditingController pageController;
   late Color hintColor;
   late Color inputColor;
+  late DateTime _startTime;
 
   @override
   void initState() {
@@ -27,6 +31,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
     pageController = TextEditingController();
     hintColor = Colors.black54;
     inputColor = Colors.black;
+    _startTime = DateTime.now();
   }
 
   @override
@@ -191,5 +196,12 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   void dispose() {
     pageController.dispose();
     super.dispose();
+  }
+
+  void recordReadingTime() {
+    DateTime endTime = DateTime.now();
+    int durationInSeconds = endTime.difference(_startTime).inSeconds;
+    widget.book.totalReadingTime += durationInSeconds;
+    widget.book.timesOpened++;
   }
 }

@@ -39,7 +39,8 @@ dependencies:
   provider: ^6.1.2
   font_awesome_flutter: ^10.7.0
   http: ^1.2.0
-  quran: ^1.2.3
+  # quran: ^1.2.3
+  # fl_chart: ^0.66.2
 
 dev_dependencies:
   flutter_test:

@@ -60,7 +60,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => PdfViewerScreen(
-                              pdfPath: bookProvider.books[index].path),
+                            pdfPath: bookProvider.books[index].path,
+                            book: bookProvider.books[index],
+                          ),
                         ),
                       );
                     },
