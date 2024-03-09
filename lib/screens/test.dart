@@ -1,44 +1,93 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:quran/quran.dart' as quran;
+import 'package:http/http.dart' as http;
 
-class MyOnlineBooks extends StatefulWidget {
-  const MyOnlineBooks({Key? key}) : super(key: key);
-
-  @override
-  _MyOnlineBooksState createState() => _MyOnlineBooksState();
+void main() {
+  runApp(const MaterialApp(
+    home: BookListScreen(),
+  ));
 }
 
-class _MyOnlineBooksState extends State<MyOnlineBooks> {
+class BookListScreen extends StatefulWidget {
+  const BookListScreen({Key? key}) : super(key: key);
+
+  @override
+  _BookListScreenState createState() => _BookListScreenState();
+}
+
+class _BookListScreenState extends State<BookListScreen> {
+  late Future<List<dynamic>> _fetchBooks;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchBooks = fetchBooks();
+  }
+
+  Future<List<dynamic>> fetchBooks() async {
+    final response = await http.get(Uri.parse(
+        'https://mohammad-hossain-saddy.github.io/api_host/flutter.json'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body)['books'];
+      return data;
+    } else {
+      throw Exception('Failed to load books');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('API DATA'),
+        title: const Text('Book List'),
+        backgroundColor: Colors.blue,
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Juz Number: \n${quran.getJuzNumber(67, 1)}"),
-              Text("\nJuz URL: \n${quran.getJuzURL(15)}"),
-              Text(
-                  "\nSurah and Verses in Juz 15: \n${quran.getSurahAndVersesFromJuz(15)}"),
-              Text("\nSurah Name: \n${quran.getSurahName(67)}"),
-              Text(
-                  "\nSurah Name (English): \n${quran.getSurahNameEnglish(18)}"),
-              Text("\nSurah URL: \n${quran.getSurahURL(67)}"),
-              Text("\nTotal Verses: \n${quran.getVerseCount(67)}"),
-              Text(
-                  "\nPlace of Revelation: \n${quran.getPlaceOfRevelation(67)}"),
-              const Text("\nBasmala: \n ${quran.basmala}"),
-              Text("\nVerse 1: \n${quran.getVerse(67, 1)}")
-            ],
-          ),
-        ),
+      body: FutureBuilder<List<dynamic>>(
+        future: _fetchBooks,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            final List<dynamic> books = snapshot.data!;
+            return ListView.builder(
+              itemCount: books.length,
+              itemBuilder: (context, index) {
+                final book = books[index];
+                return ListTile(
+                  leading: CircleAvatar(
+                    radius: 50,
+                    child: Text(
+                      book['title'][0],
+                      style: const TextStyle(fontSize: 40),
+                    ),
+                  ),
+                  onTap: () {},
+                  selectedTileColor: Colors.orange,
+                  title: Text(
+                    book['title'],
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Author: ${book['author']}'),
+                      Text('Genre: ${book['genre']}'),
+                      Text('Year: ${book['year']}'),
+                    ],
+                  ),
+                );
+              },
+            );
+          }
+        },
       ),
     );
   }

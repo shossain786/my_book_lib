@@ -36,7 +36,7 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.book_online),
-          label: 'Surah Mulk',
+          label: 'Dilchasp Waqiat',
           backgroundColor: Colors.black87,
         ),
       ],
@@ -55,7 +55,7 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
         Navigator.pushNamed(context, '/myFavouriteBooks');
         break;
       case 2:
-        Navigator.pushNamed(context, '/onlineBooks');
+        Navigator.pushNamed(context, '/waqias');
         break;
     }
   }
