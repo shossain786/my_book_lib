@@ -31,7 +31,7 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.favorite),
-          label: 'Favourite Books',
+          label: 'Favorite Books',
           backgroundColor: Color.fromRGBO(53, 0, 0, 0.974),
         ),
         BottomNavigationBarItem(

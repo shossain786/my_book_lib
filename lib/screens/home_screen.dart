@@ -72,14 +72,27 @@ class LibraryBooksSection extends StatelessWidget {
             child: Column(
               children: [
                 const CircleAvatar(
-                  radius: 30,
-                  child: Icon(FontAwesomeIcons.book),
+                  radius: 50,
+                  child: Icon(
+                    FontAwesomeIcons.book,
+                    size: 55,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  libraryBooks[index].name,
+                  libraryBooks[index].name.length > 10
+                      ? '${libraryBooks[index].name.substring(0, 10)}...'
+                      : libraryBooks[index].name,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                Text(
+                  libraryBooks[index].author,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontWeight: FontWeight.w400),
                 ),
               ],
             ),
@@ -105,8 +118,16 @@ class FavoriteBooksSection extends StatelessWidget {
         return ListTile(
           title: Text(favoriteBooks[index].name),
           subtitle: Text(favoriteBooks[index].author),
-          leading: const CircleAvatar(
-            child: Icon(Icons.book),
+          leading: const Column(
+            children: [
+              CircleAvatar(
+                // radius: 20,
+                child: Icon(
+                  FontAwesomeIcons.book,
+                  size: 20,
+                ),
+              ),
+            ],
           ),
           onTap: () {
             Navigator.push(
