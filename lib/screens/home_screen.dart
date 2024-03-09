@@ -20,7 +20,10 @@ class MyApp extends StatelessWidget {
             padding: EdgeInsets.all(8.0),
             child: Text(
               'Library Books',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Expanded(
@@ -30,7 +33,10 @@ class MyApp extends StatelessWidget {
             padding: EdgeInsets.all(8.0),
             child: Text(
               'Favorite Books',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Expanded(
