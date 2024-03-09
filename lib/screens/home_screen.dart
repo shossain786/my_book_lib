@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_book_lib/model/book_provider.dart';
 import 'package:my_book_lib/screens/pdf_viewer_screen.dart';
 import 'package:my_book_lib/widgets/bottom_nav_bar.dart';
@@ -71,12 +70,11 @@ class LibraryBooksSection extends StatelessWidget {
             },
             child: Column(
               children: [
-                const CircleAvatar(
-                  radius: 50,
-                  child: Icon(
-                    FontAwesomeIcons.book,
-                    size: 55,
-                  ),
+                Image.asset(
+                  // 'assets/${libraryBooks[index].imagePath}',
+                  'assets/book.png',
+                  width: 100,
+                  height: 100,
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -118,14 +116,12 @@ class FavoriteBooksSection extends StatelessWidget {
         return ListTile(
           title: Text(favoriteBooks[index].name),
           subtitle: Text(favoriteBooks[index].author),
-          leading: const Column(
+          leading: Column(
             children: [
-              CircleAvatar(
-                // radius: 20,
-                child: Icon(
-                  FontAwesomeIcons.book,
-                  size: 20,
-                ),
+              Image.asset(
+                'assets/Fav_book.png',
+                width: 60,
+                height: 50,
               ),
             ],
           ),

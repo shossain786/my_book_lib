@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quran/quran.dart' as quran;
 
 class WaqiaDetailsScreen extends StatelessWidget {
   final String title;
@@ -56,7 +55,7 @@ class WaqiaDetailsScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      quran.basmala,
+                      'بِسْمِ ٱللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ',
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         fontSize: 20,
