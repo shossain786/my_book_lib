@@ -55,7 +55,7 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
         Navigator.pushNamed(context, '/myFavouriteBooks');
         break;
       case 2:
-        Navigator.pushNamed(context, '/waqias');
+        Navigator.pushNamed(context, '/waqia_json');
         break;
     }
   }

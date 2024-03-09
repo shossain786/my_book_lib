@@ -4,9 +4,10 @@ import 'package:my_book_lib/screens/home_screen.dart';
 import 'package:my_book_lib/screens/library_screen.dart';
 import 'package:my_book_lib/model/book_provider.dart';
 import 'package:my_book_lib/screens/surah_mulk.dart';
-import 'package:my_book_lib/screens/waqia_items.dart';
 // import 'package:my_book_lib/screens/test.dart';
 import 'package:provider/provider.dart';
+
+import 'screens/waqia_screen.dart';
 
 var kColorScheme = ColorScheme.fromSeed(seedColor: Colors.black);
 void main() {
@@ -42,7 +43,8 @@ void main() {
           '/myLibrary': (context) => const LibraryScreen(),
           '/myFavouriteBooks': (context) => const FavoritesScreen(),
           '/onlineBooks': (context) => const QuranSurah(),
-          '/waqias': (context) => const WaqiasScreen()
+          // '/waqias': (context) => const WaqiasScreen(),
+          '/waqia_json': (context) => const WaqiasScreen(),
         },
       ),
     ),
