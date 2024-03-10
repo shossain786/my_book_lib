@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_book_lib/model/book_provider.dart';
 import 'package:my_book_lib/screens/pdf_viewer_screen.dart';
 import 'package:provider/provider.dart';
@@ -26,11 +25,12 @@ class FavoritesScreen extends StatelessWidget {
               elevation: 5.0,
               shadowColor: Colors.greenAccent,
               child: ListTile(
-                title: Text(favoriteBooks[index].name),
-                subtitle: Text(favoriteBooks[index].author),
-                leading: const CircleAvatar(
-                  child: FaIcon(FontAwesomeIcons.bookQuran),
+                title: Text(
+                  favoriteBooks[index].name,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
+                subtitle: Text(favoriteBooks[index].author),
+                leading: Image.asset('assets/Fav_book.png'),
                 onTap: () {
                   Navigator.push(
                     context,

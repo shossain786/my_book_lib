@@ -39,8 +39,8 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
     return Scaffold(
       backgroundColor: nightMode ? Colors.black : Colors.white,
       appBar: AppBar(
-        title: const Text(
-          'PDF Viewer',
+        title: Text(
+          widget.book.name,
         ),
         foregroundColor: nightMode ? Colors.white : Colors.black,
         backgroundColor: nightMode ? Colors.black : Colors.white,

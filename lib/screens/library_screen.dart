@@ -1,7 +1,9 @@
+import 'dart:math';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_book_lib/model/book.dart';
-import 'package:my_book_lib/widgets/add_books.dart';
 import 'package:my_book_lib/model/book_provider.dart';
 import 'package:my_book_lib/screens/favourite_screen.dart';
 import 'package:my_book_lib/screens/pdf_viewer_screen.dart';
@@ -15,6 +17,10 @@ class LibraryScreen extends StatefulWidget {
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
+  late String _filePath = '';
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _authorController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,9 +56,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(bookProvider.books[index].author),
-                    leading: const CircleAvatar(
-                      child: FaIcon(FontAwesomeIcons.bookQuran),
-                    ),
+                    leading: Image.asset('assets/book.png'),
                     trailing: buildPopupMenuButton(
                         bookProvider.books[index], bookProvider),
                     onTap: () {
@@ -83,7 +87,51 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 
   void _addBooks() {
-    showDialog(context: context, builder: (context) => const AddBookScreen());
+    showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: const Color.fromARGB(235, 233, 198, 198),
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 550,
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TextField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(labelText: 'Book Name'),
+                ),
+                TextField(
+                  controller: _authorController,
+                  decoration: const InputDecoration(labelText: 'Author Name'),
+                ),
+                const SizedBox(height: 16.0),
+                Row(
+                  children: [
+                    TextButton.icon(
+                      icon: const Icon(FontAwesomeIcons.filePdf),
+                      onPressed: () {
+                        _openFilePicker(context);
+                      },
+                      label: const Text('Select PDF File'),
+                    ),
+                    const Expanded(child: SizedBox()),
+                    ElevatedButton(
+                      onPressed: () {
+                        _addBook(context);
+                      },
+                      child: const Text('Add Book'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Widget buildPopupMenuButton(Book book, BookProvider bookProvider) {
@@ -124,6 +172,47 @@ class _LibraryScreenState extends State<LibraryScreen> {
         ),
       ],
     );
+  }
+
+  Future<void> _openFilePicker(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      setState(() {
+        _filePath = result.files.single.path!;
+      });
+    }
+  }
+
+  void _addBook(BuildContext context) {
+    String name = _nameController.text;
+    String author = _authorController.text;
+    if (name.isNotEmpty && author.isNotEmpty && _filePath.isNotEmpty) {
+      final bookProvider = Provider.of<BookProvider>(context, listen: false);
+      bookProvider.addBook(Book(
+          name: name,
+          author: author,
+          path: _filePath,
+          id: _generateRandomID()));
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Make sure to select pdf file, name and auther name!'),
+        ),
+      );
+    }
+  }
+
+  static String _generateRandomID() {
+    Random random = Random();
+    int id = random.nextInt(900000) + 100000;
+    debugPrint(
+        'ID generated: ------------------Add Book------------------- ${id.toString()}');
+    return id.toString();
   }
 
   void _deleteBook(BuildContext context, BookProvider bookProvider, Book book) {

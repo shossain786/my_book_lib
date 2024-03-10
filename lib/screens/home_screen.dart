@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 300,
+              height: 400,
               child: FavoriteBooksSection(),
             ),
             SizedBox(
@@ -82,31 +82,40 @@ class LibraryBooksSection extends StatelessWidget {
                   ),
                 );
               },
-              child: Column(
-                children: [
-                  Image.asset(
-                    // 'assets/${libraryBooks[index].imagePath}',
-                    'assets/book.png',
-                    width: 100,
-                    height: 100,
+              child: Hero(
+                tag: libraryBooks[index].name,
+                child: Card(
+                  elevation: 5,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Image.asset(
+                          // 'assets/${libraryBooks[index].imagePath}',
+                          'assets/book.png',
+                          width: 100,
+                          height: 100,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        libraryBooks[index].name.length > 10
+                            ? '${libraryBooks[index].name.substring(0, 10)}...'
+                            : libraryBooks[index].name,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Text(
+                        libraryBooks[index].author,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontWeight: FontWeight.w400),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    libraryBooks[index].name.length > 10
-                        ? '${libraryBooks[index].name.substring(0, 10)}...'
-                        : libraryBooks[index].name,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  Text(
-                    libraryBooks[index].author,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontWeight: FontWeight.w400),
-                  ),
-                ],
+                ),
               ),
             ),
           );
@@ -132,7 +141,12 @@ class FavoriteBooksSection extends StatelessWidget {
         itemCount: favoriteBooks.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(favoriteBooks[index].name),
+            title: Text(
+              favoriteBooks[index].name,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             subtitle: Text(favoriteBooks[index].author),
             leading: Column(
               children: [
