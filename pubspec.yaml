@@ -39,8 +39,7 @@ dependencies:
   provider: ^6.1.2
   font_awesome_flutter: ^10.7.0
   http: ^1.2.0
-  # quran: ^1.2.3
-  # fl_chart: ^0.66.2
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +68,13 @@ flutter:
     - assets/json_files/waqia.json
     - assets/book.png
     - assets/Fav_book.png
+
+
+flutter_icons: 
+  android: true
+  image_path: "assets/books_logo.png"
+  adaptive_icon_foreground: "assets/books_logo.png"
+  adaptive_icon_background: "#eeff1b"
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
