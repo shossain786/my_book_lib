@@ -20,6 +20,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
   late String _filePath = '';
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _authorController = TextEditingController();
+  bool _isGridView = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +28,16 @@ class _LibraryScreenState extends State<LibraryScreen> {
       appBar: AppBar(
         title: const Text('My Library'),
         actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _isGridView = !_isGridView;
+              });
+            },
+            icon: Icon(
+              _isGridView ? Icons.list_rounded : Icons.grid_view_rounded,
+            ),
+          ),
           IconButton(
             icon: const Icon(Icons.favorite),
             onPressed: () {
@@ -39,50 +50,124 @@ class _LibraryScreenState extends State<LibraryScreen> {
           ),
         ],
       ),
-      body: Consumer<BookProvider>(
-        builder: (context, bookProvider, child) {
-          bookProvider.loadBooks();
-          return ListView.builder(
-            itemCount: bookProvider.books.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 2.0, right: 2.0),
-                child: Card(
-                  elevation: 5.0,
-                  shadowColor: Colors.greenAccent,
-                  child: ListTile(
-                    title: Text(
-                      bookProvider.books[index].name,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(bookProvider.books[index].author),
-                    leading: Image.asset('assets/book.png'),
-                    trailing: buildPopupMenuButton(
-                        bookProvider.books[index], bookProvider),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PdfViewerScreen(
-                            pdfPath: bookProvider.books[index].path,
-                            book: bookProvider.books[index],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
+      body: _isGridView ? _buildGridView() : _buildListView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _addBooks();
         },
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  Widget _buildGridView() {
+    return Consumer<BookProvider>(
+      builder: (context, bookProvider, child) {
+        bookProvider.loadBooks();
+        return GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 4.0,
+            mainAxisSpacing: 4.0,
+          ),
+          itemCount: bookProvider.books.length,
+          itemBuilder: (context, index) {
+            return Card(
+              elevation: 5.0,
+              shadowColor: Colors.greenAccent,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PdfViewerScreen(
+                        pdfPath: bookProvider.books[index].path,
+                        book: bookProvider.books[index],
+                      ),
+                    ),
+                  );
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, left: 4, right: 4),
+                      child: AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: Image.asset(
+                          'assets/book.png',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                    const Expanded(
+                      child: SizedBox(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 2),
+                      child: Text(
+                        bookProvider.books[index].name,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Text(
+                        bookProvider.books[index].author,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildListView() {
+    return Consumer<BookProvider>(
+      builder: (context, bookProvider, child) {
+        bookProvider.loadBooks();
+        return ListView.builder(
+          itemCount: bookProvider.books.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(left: 2.0, right: 2.0),
+              child: Card(
+                elevation: 5.0,
+                shadowColor: Colors.greenAccent,
+                child: ListTile(
+                  title: Text(
+                    bookProvider.books[index].name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(bookProvider.books[index].author),
+                  leading: Image.asset('assets/book.png'),
+                  trailing: buildPopupMenuButton(
+                      bookProvider.books[index], bookProvider),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PdfViewerScreen(
+                          pdfPath: bookProvider.books[index].path,
+                          book: bookProvider.books[index],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
