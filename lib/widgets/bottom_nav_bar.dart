@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:my_book_lib/main.dart';
 
 class MyBottomNavBar extends StatefulWidget {
   const MyBottomNavBar({super.key});
@@ -18,26 +19,26 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
       onTap: _onItemTapped,
       currentIndex: _selectedIndex,
       unselectedFontSize: 15,
-      selectedFontSize: 20,
+      selectedFontSize: 18,
       unselectedItemColor: Colors.orange,
       selectedItemColor: Colors.blue,
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      items: const <BottomNavigationBarItem>[
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.book),
+          icon: const Icon(FontAwesomeIcons.book),
           label: 'My Library',
-          backgroundColor: Color.fromRGBO(53, 0, 0, 0.974),
+          backgroundColor: kColorScheme.onPrimaryContainer,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.favorite),
+          icon: const Icon(Icons.favorite),
           label: 'Favorite Books',
-          backgroundColor: Color.fromRGBO(53, 0, 0, 0.974),
+          backgroundColor: kColorScheme.onPrimaryContainer,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.book_online),
+          icon: const Icon(Icons.book_online),
           label: 'Dilchasp Waqiat',
-          backgroundColor: Color.fromRGBO(53, 0, 0, 0.974),
+          backgroundColor: kColorScheme.onPrimaryContainer,
         ),
       ],
     );
