@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_book_lib/model/book.dart';
 
 class PdfViewerScreen extends StatefulWidget {
@@ -49,33 +48,13 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             icon: Icon(
               Icons.lightbulb,
               color: nightMode
-                  ? const Color.fromARGB(255, 64, 244, 70)
+                  ? const Color.fromARGB(255, 244, 235, 64)
                   : Colors.black,
             ),
             onPressed: () {
               setState(() {
                 nightMode = !nightMode;
                 _updateTextFieldColors();
-              });
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.first_page),
-            onPressed: () {
-              pdfController.setPage(0);
-              setState(() {
-                pageNumber = 1;
-              });
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.last_page),
-            onPressed: () {
-              pdfController.getPageCount().then((count) {
-                pdfController.setPage(count! - 1);
-                setState(() {
-                  pageNumber = count;
-                });
               });
             },
           ),
@@ -144,9 +123,20 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                         });
                       },
                     ),
-                    const SizedBox(width: 20),
+                    const SizedBox(width: 10),
+                    IconButton(
+                      icon: const Icon(Icons.first_page),
+                      color: MaterialStateColor.resolveWith(
+                          (states) => nightMode ? Colors.white : Colors.black),
+                      onPressed: () {
+                        pdfController.setPage(0);
+                        setState(() {
+                          pageNumber = 1;
+                        });
+                      },
+                    ),
                     SizedBox(
-                      width: 60,
+                      width: 50,
                       child: TextField(
                         controller: pageController,
                         keyboardType: TextInputType.number,
@@ -157,7 +147,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                         style: TextStyle(color: inputColor),
                       ),
                     ),
-                    TextButton(
+                    IconButton(
                       style: ButtonStyle(
                         iconColor: MaterialStateColor.resolveWith((states) =>
                             nightMode ? Colors.white : Colors.black),
@@ -169,11 +159,26 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                           setState(() {
                             pageNumber = page;
                           });
-                        } else {
-                          // Handle invalid input
-                        }
+                        } else {}
                       },
-                      child: const FaIcon(FontAwesomeIcons.anglesRight),
+                      icon: const Icon(Icons.navigate_next_rounded),
+                    ),
+                    IconButton(
+                      color: MaterialStateColor.resolveWith(
+                          (states) => nightMode ? Colors.white : Colors.black),
+                      icon: const Icon(Icons.last_page),
+                      onPressed: () {
+                        pdfController.getPageCount().then(
+                          (count) {
+                            pdfController.setPage(count! - 1);
+                            setState(
+                              () {
+                                pageNumber = count;
+                              },
+                            );
+                          },
+                        );
+                      },
                     ),
                   ],
                 ),
