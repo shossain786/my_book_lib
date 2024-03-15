@@ -38,31 +38,27 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
                   const Expanded(child: SizedBox()),
-                  Column(
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          Icons.arrow_forward,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LibraryScreen(),
                         ),
-                        color: kColorScheme.onPrimaryContainer,
-                        iconSize: 40,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LibraryScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      Text(
-                        'See All',
-                        style: TextStyle(
-                          color: kColorScheme.onPrimaryContainer,
-                          fontWeight: FontWeight.bold,
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        const Icon(Icons.arrow_circle_right_rounded),
+                        Text(
+                          'See All',
+                          style: TextStyle(
+                            color: kColorScheme.onPrimaryContainer,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -102,17 +98,15 @@ class LibraryBooksSection extends StatelessWidget {
     final libraryBooks = bookProvider.books.take(15).toList();
 
     return Container(
-      // color: kColorScheme.secondary,
       decoration: BoxDecoration(
         border: Border.all(
           width: 2,
-          // color: kColorScheme.primaryContainer,
           color: kColorScheme.onPrimaryContainer,
         ),
         borderRadius: BorderRadius.circular(10),
       ),
       child: SizedBox(
-        height: 160,
+        height: 170,
         child: ListView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
@@ -121,55 +115,65 @@ class LibraryBooksSection extends StatelessWidget {
             return Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PdfViewerScreen(
-                        pdfPath: libraryBooks[index].path,
-                        book: libraryBooks[index],
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: kColorScheme.onPrimaryContainer,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PdfViewerScreen(
+                          pdfPath: libraryBooks[index].path,
+                          book: libraryBooks[index],
+                        ),
                       ),
-                    ),
-                  );
-                },
-                child: Column(
-                  children: [
-                    Card(
-                      // color: Colors.white,
-                      color: kColorScheme.onPrimaryContainer,
-                      elevation: 5,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2),
-                            child: Image.asset(
-                              // 'assets/${libraryBooks[index].imagePath}',
-                              'assets/book.png',
-                              width: 100,
-                              height: 100,
+                    );
+                  },
+                  child: Column(
+                    children: [
+                      Card(
+                        color: kColorScheme.onPrimaryContainer,
+                        elevation: 5,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Image.asset(
+                                // 'assets/${libraryBooks[index].imagePath}',
+                                'assets/book.png',
+                                width: 100,
+                                height: 100,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 2),
-                        ],
+                            const SizedBox(height: 2),
+                          ],
+                        ),
                       ),
-                    ),
-                    Text(
-                      libraryBooks[index].name.length > 10
-                          ? '${libraryBooks[index].name.substring(0, 10)}...'
-                          : libraryBooks[index].name,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                      Text(
+                        libraryBooks[index].name.length > 10
+                            ? '${libraryBooks[index].name.substring(0, 10)}...'
+                            : libraryBooks[index].name,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
-                    Text(
-                      libraryBooks[index].author,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontWeight: FontWeight.w400),
-                    ),
-                  ],
+                      Text(
+                        libraryBooks[index].author.length > 14
+                            ? '${libraryBooks[index].author.substring(0, 14)}...'
+                            : libraryBooks[index].author,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -189,42 +193,63 @@ class FavoriteBooksSection extends StatelessWidget {
     final favoriteBooks =
         bookProvider.books.where((book) => book.isFavorite).take(15).toList();
 
-    return SizedBox(
-      height: 200,
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: favoriteBooks.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(
-              favoriteBooks[index].name,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            subtitle: Text(favoriteBooks[index].author),
-            leading: Column(
-              children: [
-                Image.asset(
-                  'assets/Fav_book.png',
-                  width: 60,
-                  height: 50,
-                ),
-              ],
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PdfViewerScreen(
-                    pdfPath: favoriteBooks[index].path,
-                    book: favoriteBooks[index],
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 2,
+          color: kColorScheme.onPrimaryContainer,
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: SizedBox(
+        height: 200,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: favoriteBooks.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: kColorScheme.onPrimaryContainer,
                   ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              );
-            },
-          );
-        },
+                child: ListTile(
+                  title: Text(
+                    favoriteBooks[index].name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Text(favoriteBooks[index].author),
+                  leading: Column(
+                    children: [
+                      Image.asset(
+                        'assets/Fav_book.png',
+                        width: 60,
+                        height: 50,
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PdfViewerScreen(
+                          pdfPath: favoriteBooks[index].path,
+                          book: favoriteBooks[index],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
