@@ -168,7 +168,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
           itemCount: bookProvider.books.length,
           itemBuilder: (context, index) {
             return Container(
-              margin: const EdgeInsets.only(top: 2),
+              margin: const EdgeInsets.only(left: 4, right: 4, top: 4),
               width: 3,
               decoration: BoxDecoration(
                 color: kColorScheme.onPrimaryContainer,
