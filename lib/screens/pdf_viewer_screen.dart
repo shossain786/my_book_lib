@@ -22,7 +22,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   late TextEditingController pageController;
   late Color hintColor;
   late Color inputColor;
-  late DateTime _startTime;
 
   @override
   void initState() {
@@ -30,7 +29,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
     pageController = TextEditingController();
     hintColor = Colors.black54;
     inputColor = Colors.black;
-    _startTime = DateTime.now();
   }
 
   @override
@@ -52,10 +50,11 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                   : Colors.black,
             ),
             onPressed: () {
-              setState(() {
-                nightMode = !nightMode;
-                _updateTextFieldColors();
-              });
+              setState(
+                () {
+                  nightMode = !nightMode;
+                },
+              );
             },
           ),
         ],
@@ -82,9 +81,11 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                 });
               },
               onPageChanged: (int? page, int? total) {
-                setState(() {
-                  pageNumber = page! + 1;
-                });
+                setState(
+                  () {
+                    pageNumber = page! + 1;
+                  },
+                );
               },
             ),
             Positioned(
@@ -142,9 +143,11 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: 'Page',
-                          hintStyle: TextStyle(color: hintColor),
+                          hintStyle: TextStyle(
+                              color: nightMode ? Colors.white : Colors.black),
                         ),
-                        style: TextStyle(color: inputColor),
+                        style: TextStyle(
+                            color: nightMode ? Colors.white : Colors.black),
                       ),
                     ),
                     IconButton(
@@ -190,23 +193,9 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
     );
   }
 
-  void _updateTextFieldColors() {
-    setState(() {
-      hintColor = nightMode ? Colors.white70 : Colors.black54;
-      inputColor = nightMode ? Colors.white : Colors.black;
-    });
-  }
-
   @override
   void dispose() {
     pageController.dispose();
     super.dispose();
-  }
-
-  void recordReadingTime() {
-    DateTime endTime = DateTime.now();
-    int durationInSeconds = endTime.difference(_startTime).inSeconds;
-    widget.book.totalReadingTime += durationInSeconds;
-    widget.book.timesOpened++;
   }
 }
