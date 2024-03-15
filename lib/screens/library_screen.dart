@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:my_book_lib/main.dart';
 import 'package:my_book_lib/model/book.dart';
 import 'package:my_book_lib/model/book_provider.dart';
 import 'package:my_book_lib/screens/favourite_screen.dart';
@@ -67,60 +68,89 @@ class _LibraryScreenState extends State<LibraryScreen> {
         return GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            crossAxisSpacing: 4.0,
-            mainAxisSpacing: 4.0,
+            crossAxisSpacing: 2.0,
+            mainAxisSpacing: 2.0,
           ),
           itemCount: bookProvider.books.length,
           itemBuilder: (context, index) {
-            return Card(
-              elevation: 5.0,
-              shadowColor: Colors.greenAccent,
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PdfViewerScreen(
-                        pdfPath: bookProvider.books[index].path,
-                        book: bookProvider.books[index],
-                      ),
-                    ),
-                  );
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4, left: 4, right: 4),
-                      child: AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: Image.asset(
-                          'assets/book.png',
-                          fit: BoxFit.fill,
+            return Padding(
+              padding: const EdgeInsets.only(top: 2.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 2,
+                    color: kColorScheme.onPrimaryContainer,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Card(
+                  elevation: 5.0,
+                  color: kColorScheme.onPrimaryContainer,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PdfViewerScreen(
+                            pdfPath: bookProvider.books[index].path,
+                            book: bookProvider.books[index],
+                          ),
                         ),
-                      ),
-                    ),
-                    const Expanded(
-                      child: SizedBox(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 2),
-                      child: Text(
-                        bookProvider.books[index].name,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text(
-                        bookProvider.books[index].author,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10,
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: kColorScheme.onPrimary,
                         ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 4, left: 4, right: 4),
+                            child: AspectRatio(
+                              aspectRatio: 16 / 9,
+                              child: Image.asset(
+                                'assets/book.png',
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                          const Expanded(
+                            child: SizedBox(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 2),
+                            child: Column(
+                              children: [
+                                Text(
+                                  bookProvider.books[index].name,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: kColorScheme.onPrimary,
+                                  ),
+                                ),
+                                Text(
+                                  bookProvider.books[index].author,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10,
+                                    color: kColorScheme.onPrimary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             );
@@ -137,31 +167,77 @@ class _LibraryScreenState extends State<LibraryScreen> {
         return ListView.builder(
           itemCount: bookProvider.books.length,
           itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.only(left: 2.0, right: 2.0),
-              child: Card(
-                elevation: 5.0,
-                shadowColor: Colors.greenAccent,
-                child: ListTile(
-                  title: Text(
-                    bookProvider.books[index].name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(bookProvider.books[index].author),
-                  leading: Image.asset('assets/book.png'),
-                  trailing: buildPopupMenuButton(
-                      bookProvider.books[index], bookProvider),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PdfViewerScreen(
-                          pdfPath: bookProvider.books[index].path,
-                          book: bookProvider.books[index],
+            return Container(
+              width: 3,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 2.0, right: 2.0),
+                child: Card(
+                  elevation: 5.0,
+                  shadowColor: Colors.greenAccent,
+                  child: ListTile(
+                    tileColor: kColorScheme.onPrimaryContainer,
+                    title: Row(
+                      children: [
+                        Text(
+                          "Book: ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: kColorScheme.onPrimary,
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                        Text(
+                          bookProvider.books[index].name,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: kColorScheme.onPrimary,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                    subtitle: Row(
+                      children: [
+                        Text(
+                          'Author: ',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: kColorScheme.onPrimary,
+                          ),
+                        ),
+                        Text(
+                          bookProvider.books[index].author,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: kColorScheme.onPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    leading: Image.asset(
+                      'assets/book.png',
+                    ),
+                    trailing: buildPopupMenuButton(
+                      bookProvider.books[index],
+                      bookProvider,
+                    ),
+                    iconColor: kColorScheme.onPrimary,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PdfViewerScreen(
+                            pdfPath: bookProvider.books[index].path,
+                            book: bookProvider.books[index],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             );
