@@ -168,15 +168,19 @@ class _LibraryScreenState extends State<LibraryScreen> {
           itemCount: bookProvider.books.length,
           itemBuilder: (context, index) {
             return Container(
+              margin: const EdgeInsets.only(top: 2),
               width: 3,
               decoration: BoxDecoration(
+                color: kColorScheme.onPrimaryContainer,
                 borderRadius: BorderRadius.circular(10),
+                border: const Border(
+                  bottom: BorderSide(color: Colors.white, width: 2),
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsets.only(left: 2.0, right: 2.0),
                 child: Card(
                   elevation: 5.0,
-                  shadowColor: Colors.greenAccent,
                   child: ListTile(
                     tileColor: kColorScheme.onPrimaryContainer,
                     title: Row(
