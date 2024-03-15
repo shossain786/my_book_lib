@@ -60,6 +60,5 @@ class BookProvider extends ChangeNotifier {
       }).toList();
       notifyListeners();
     }
-    debugPrint('Books found in the database: ${_books[0].name}');
   }
 }
