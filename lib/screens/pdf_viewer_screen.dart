@@ -1,8 +1,9 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, unused_element
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:my_book_lib/model/book.dart';
+import 'package:my_book_lib/model/book_provider.dart';
 
 class PdfViewerScreen extends StatefulWidget {
   final String pdfPath;
@@ -29,6 +30,13 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
     pageController = TextEditingController();
     hintColor = Colors.black54;
     inputColor = Colors.black;
+
+    pageNumber = widget.book.lastReadPage;
+  }
+
+  void _updateLastReadPage(int page) async {
+    widget.book.lastReadPage = page;
+    await BookProvider().saveBooks();
   }
 
   @override
@@ -81,11 +89,10 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                 });
               },
               onPageChanged: (int? page, int? total) {
-                setState(
-                  () {
-                    pageNumber = page! + 1;
-                  },
-                );
+                setState(() {
+                  pageNumber = page! + 1;
+                });
+                _updateLastReadPage(pageNumber);
               },
             ),
             Positioned(
@@ -146,25 +153,18 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                           hintStyle: TextStyle(
                               color: nightMode ? Colors.white : Colors.black),
                         ),
+                        onSubmitted: (value) {
+                          int? page = int.tryParse(value);
+                          if (page != null && page > 0) {
+                            pdfController.setPage(page - 1);
+                            setState(() {
+                              pageNumber = page;
+                            });
+                          }
+                        },
                         style: TextStyle(
                             color: nightMode ? Colors.white : Colors.black),
                       ),
-                    ),
-                    IconButton(
-                      style: ButtonStyle(
-                        iconColor: MaterialStateColor.resolveWith((states) =>
-                            nightMode ? Colors.white : Colors.black),
-                      ),
-                      onPressed: () {
-                        int? page = int.tryParse(pageController.text);
-                        if (page != null && page > 0) {
-                          pdfController.setPage(page - 1);
-                          setState(() {
-                            pageNumber = page;
-                          });
-                        } else {}
-                      },
-                      icon: const Icon(Icons.navigate_next_rounded),
                     ),
                     IconButton(
                       color: MaterialStateColor.resolveWith(

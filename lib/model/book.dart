@@ -6,6 +6,7 @@ class Book {
   bool isFavorite;
   int timesOpened;
   int totalReadingTime;
+  int lastReadPage;
 
   Book({
     required this.name,
@@ -15,5 +16,6 @@ class Book {
     required this.id,
     this.timesOpened = 0,
     this.totalReadingTime = 0,
+    this.lastReadPage = 0,
   });
 }

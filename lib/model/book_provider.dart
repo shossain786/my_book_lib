@@ -38,7 +38,7 @@ class BookProvider extends ChangeNotifier {
       _books
           .map(
             (book) =>
-                "${book.id}|${book.name}|${book.author}|${book.path}|${book.isFavorite ? '1' : '0'}",
+                "${book.id}|${book.name}|${book.author}|${book.path}|${book.isFavorite ? '1' : '0'}|${book.lastReadPage}",
           )
           .toList(),
     );
@@ -51,12 +51,12 @@ class BookProvider extends ChangeNotifier {
       _books = bookStrings.map((bookString) {
         List<String> parts = bookString.split('|');
         return Book(
-          id: parts[0],
-          name: parts[1],
-          author: parts[2],
-          path: parts[3],
-          isFavorite: parts[4] == '1',
-        );
+            id: parts[0],
+            name: parts[1],
+            author: parts[2],
+            path: parts[3],
+            isFavorite: parts[4] == '1',
+            lastReadPage: int.parse(parts[5]));
       }).toList();
       notifyListeners();
     }
