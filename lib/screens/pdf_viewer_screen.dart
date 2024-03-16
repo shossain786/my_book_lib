@@ -30,7 +30,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
     pageController = TextEditingController();
     hintColor = Colors.black54;
     inputColor = Colors.black;
-
     pageNumber = widget.book.lastReadPage;
   }
 

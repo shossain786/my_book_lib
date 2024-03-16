@@ -51,7 +51,10 @@ class MyApp extends StatelessWidget {
                     },
                     child: Column(
                       children: [
-                        const Icon(Icons.arrow_circle_right_rounded),
+                        Icon(
+                          Icons.arrow_circle_right_rounded,
+                          color: kColorScheme.onPrimaryContainer,
+                        ),
                         Text(
                           'See All',
                           style: TextStyle(
@@ -230,10 +233,22 @@ class FavoriteBooksSection extends StatelessWidget {
                   subtitle: Text(favoriteBooks[index].author),
                   leading: Column(
                     children: [
-                      Image.asset(
-                        'assets/Fav_book.png',
-                        width: 60,
-                        height: 50,
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black, // Border color
+                            width: 2, // Border width
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(3),
+                          child: Image.asset(
+                            'assets/Fav_book.png',
+                            width: 50,
+                            height: 50,
+                          ),
+                        ),
                       ),
                     ],
                   ),
