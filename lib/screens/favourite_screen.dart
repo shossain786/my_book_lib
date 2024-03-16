@@ -15,7 +15,14 @@ class FavoritesScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Favorite Books'),
+        title: const Text(
+          'Favorite Books',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+        ),
+        centerTitle: true,
       ),
       body: ListView.builder(
         itemCount: favoriteBooks.length,
@@ -47,7 +54,9 @@ class FavoritesScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        favoriteBooks[index].name,
+                        favoriteBooks[index].name.length > 25
+                            ? '${favoriteBooks[index].name.substring(0, 22)}...'
+                            : favoriteBooks[index].name,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: kColorScheme.onPrimary,
@@ -67,7 +76,9 @@ class FavoritesScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        favoriteBooks[index].author,
+                        favoriteBooks[index].author.length > 30
+                            ? '${favoriteBooks[index].author.substring(0, 27)}...'
+                            : favoriteBooks[index].author,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: kColorScheme.onPrimary,

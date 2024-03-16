@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'screens/waqia_screen.dart';
 
+bool nightMode = false;
 var kColorScheme = ColorScheme.fromSeed(seedColor: Colors.black);
 void main() {
   runApp(

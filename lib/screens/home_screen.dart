@@ -7,9 +7,14 @@ import 'package:my_book_lib/widgets/bottom_nav_bar.dart';
 import 'package:my_book_lib/widgets/my_styles.dart';
 import 'package:provider/provider.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,6 +27,21 @@ class MyApp extends StatelessWidget {
             fontSize: 24,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                nightMode = !nightMode;
+              });
+            },
+            icon: Icon(
+              Icons.lightbulb,
+              color: nightMode
+                  ? const Color.fromARGB(255, 244, 235, 64)
+                  : kColorScheme.primaryContainer,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

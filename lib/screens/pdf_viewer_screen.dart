@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:my_book_lib/main.dart';
 import 'package:my_book_lib/model/book.dart';
 import 'package:my_book_lib/model/book_provider.dart';
 
@@ -19,7 +20,6 @@ class PdfViewerScreen extends StatefulWidget {
 class _PdfViewerScreenState extends State<PdfViewerScreen> {
   late PDFViewController pdfController;
   late int pageNumber;
-  bool nightMode = false;
   late TextEditingController pageController;
   late Color hintColor;
   late Color inputColor;
@@ -48,23 +48,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         ),
         foregroundColor: nightMode ? Colors.white : Colors.black,
         backgroundColor: nightMode ? Colors.black : Colors.white,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.lightbulb,
-              color: nightMode
-                  ? const Color.fromARGB(255, 244, 235, 64)
-                  : Colors.black,
-            ),
-            onPressed: () {
-              setState(
-                () {
-                  nightMode = !nightMode;
-                },
-              );
-            },
-          ),
-        ],
       ),
       body: Container(
         color: nightMode ? Colors.black : Colors.white,
@@ -72,10 +55,10 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           children: [
             PDFView(
               filePath: widget.pdfPath,
-              autoSpacing: true,
+              // autoSpacing: true,
               enableSwipe: true,
-              fitEachPage: true,
-              fitPolicy: FitPolicy.WIDTH,
+              // fitEachPage: true,
+              // fitPolicy: FitPolicy.WIDTH,
               nightMode: nightMode,
               onRender: (pages) {
                 setState(() {

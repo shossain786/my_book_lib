@@ -27,7 +27,14 @@ class _LibraryScreenState extends State<LibraryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Library'),
+        centerTitle: true,
+        title: const Text(
+          'My Library',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -194,7 +201,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
                           ),
                         ),
                         Text(
-                          bookProvider.books[index].name,
+                          bookProvider.books[index].name.length > 25
+                              ? '${bookProvider.books[index].name.substring(0, 22)}...'
+                              : bookProvider.books[index].name,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: kColorScheme.onPrimary,
@@ -214,7 +223,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
                           ),
                         ),
                         Text(
-                          bookProvider.books[index].author,
+                          bookProvider.books[index].author.length > 30
+                              ? '${bookProvider.books[index].author}...'
+                              : bookProvider.books[index].author,
                           style: TextStyle(
                             fontSize: 14,
                             color: kColorScheme.onPrimary,
@@ -375,8 +386,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
   static String _generateRandomID() {
     Random random = Random();
     int id = random.nextInt(900000) + 100000;
-    debugPrint(
-        'ID generated: ------------------Add Book------------------- ${id.toString()}');
     return id.toString();
   }
 
