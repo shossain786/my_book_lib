@@ -4,6 +4,7 @@ import 'package:my_book_lib/model/book_provider.dart';
 import 'package:my_book_lib/screens/library_screen.dart';
 import 'package:my_book_lib/screens/pdf_viewer_screen.dart';
 import 'package:my_book_lib/widgets/bottom_nav_bar.dart';
+import 'package:my_book_lib/widgets/my_styles.dart';
 import 'package:provider/provider.dart';
 
 class MyApp extends StatelessWidget {
@@ -30,11 +31,12 @@ class MyApp extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  const Text(
+                  ThreeDText(
                     'Library Books',
                     style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
+                      color: kColorScheme.onPrimaryContainer,
                     ),
                   ),
                   const Expanded(child: SizedBox()),
@@ -64,13 +66,14 @@ class MyApp extends StatelessWidget {
               ),
             ),
             const LibraryBooksSection(),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ThreeDText(
                 'Favorite Books',
                 style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
+                  color: kColorScheme.onPrimaryContainer,
                 ),
               ),
             ),

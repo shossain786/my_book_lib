@@ -18,7 +18,7 @@ class PdfViewerScreen extends StatefulWidget {
 
 class _PdfViewerScreenState extends State<PdfViewerScreen> {
   late PDFViewController pdfController;
-  int pageNumber = 1;
+  late int pageNumber;
   bool nightMode = false;
   late TextEditingController pageController;
   late Color hintColor;

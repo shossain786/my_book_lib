@@ -21,7 +21,6 @@ void main() {
             backgroundColor: kColorScheme.onPrimaryContainer,
             foregroundColor: kColorScheme.primaryContainer,
           ),
-          // shadowColor: Color(value),
           cardTheme: const CardTheme().copyWith(
             color: kColorScheme.secondaryContainer,
             shadowColor: kColorScheme.onPrimaryContainer,
