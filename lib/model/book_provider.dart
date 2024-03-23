@@ -40,7 +40,7 @@ class BookProvider extends ChangeNotifier {
   Future<void> saveBooks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> bookStrings = _books.map((book) {
-      return "${book.id}|${book.name}|${book.author}|${book.path}|${book.isFavorite ? '1' : '0'}|${book.lastReadPage}|${book.category}";
+      return "${book.id}|${book.name}|${book.author}|${book.path}|${book.isFavorite ? '1' : '0'}|${book.lastReadPage}|${book.category}|${book.timesOpened}";
     }).toList();
     await prefs.setStringList('books', bookStrings);
   }

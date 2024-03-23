@@ -31,10 +31,14 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
     hintColor = Colors.black54;
     inputColor = Colors.black;
     pageNumber = widget.book.lastReadPage;
+    widget.book.timesOpened++;
+    BookProvider().saveBooks();
+    debugPrint(widget.book.timesOpened.toString());
   }
 
   void _updateLastReadPage(int page) async {
     widget.book.lastReadPage = page;
+    widget.book.timesOpened++;
     await BookProvider().saveBooks();
   }
 

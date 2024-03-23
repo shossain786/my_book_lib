@@ -33,11 +33,14 @@ class _LibraryScreenState extends State<LibraryScreen>
   final TextEditingController _authorController = TextEditingController();
   String _selectedCategory = 'Dars';
   late TabController _tabController;
+  late BookProvider _bookProvider;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: categories.length, vsync: this);
+    _bookProvider = Provider.of<BookProvider>(context, listen: false);
+    _bookProvider.loadBooks();
   }
 
   Widget _buildCategoryListView(String category) {
@@ -96,13 +99,13 @@ class _LibraryScreenState extends State<LibraryScreen>
                           fontSize: 20,
                         ),
                       ),
-                      const SizedBox(width: 20),
-                      Text(
-                        book.timesOpened.toString(),
-                        style: const TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
+                      // const SizedBox(width: 20),
+                      // Text(
+                      //   book.timesOpened.toString(),
+                      //   style: const TextStyle(
+                      //     fontSize: 20,
+                      //   ),
+                      // ),
                     ],
                   ),
                   subtitle: Row(
