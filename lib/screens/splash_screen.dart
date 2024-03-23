@@ -45,8 +45,8 @@ class _SplashScreenState extends State<SplashScreen> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color.fromARGB(255, 241, 227, 124), // Gold color
-              Color.fromARGB(255, 114, 84, 14), // Golden rod color
+              Color.fromARGB(255, 241, 227, 124),
+              Color.fromARGB(255, 114, 84, 14),
             ],
           ),
         ),
@@ -54,6 +54,15 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Text(
+                'بِسْمِ ٱللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                  color: Color.fromARGB(255, 105, 82, 30),
+                ),
+              ),
+              const SizedBox(height: 20),
               Image.asset('assets/Fav_book.png'),
               const SizedBox(height: 20),
               Text(
