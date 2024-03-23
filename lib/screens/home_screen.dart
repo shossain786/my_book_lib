@@ -172,7 +172,7 @@ class LibraryBooksSection extends StatelessWidget {
                               padding: const EdgeInsets.all(2.0),
                               child: Image.asset(
                                 // 'assets/${libraryBooks[index].imagePath}',
-                                'assets/book.png',
+                                'assets/book.jpg',
                                 width: 100,
                                 height: 100,
                               ),

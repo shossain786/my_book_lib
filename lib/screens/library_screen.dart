@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:my_book_lib/main.dart';
 import 'package:my_book_lib/model/book.dart';
 import 'package:my_book_lib/model/book_provider.dart';
 import 'package:my_book_lib/screens/favourite_screen.dart';
@@ -51,6 +52,9 @@ class _LibraryScreenState extends State<LibraryScreen>
           itemBuilder: (context, index) {
             final book = categoryBooks[index];
             return Card(
+              shadowColor: Colors.yellowAccent,
+              color: kColorScheme.onPrimaryContainer,
+              elevation: 10,
               child: InkWell(
                 onTap: () {
                   Navigator.push(
@@ -64,9 +68,64 @@ class _LibraryScreenState extends State<LibraryScreen>
                   );
                 },
                 child: ListTile(
-                  title: Text(book.name),
-                  subtitle: Text(book.author),
+                  leading: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(width: 2),
+                      color: kColorScheme.onPrimaryContainer,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(
+                        'assets/book.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  title: Row(
+                    children: [
+                      const Text(
+                        'Name: ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      Text(
+                        book.name,
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Text(
+                        book.lastReadPage.toString(),
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                  subtitle: Row(
+                    children: [
+                      const Text(
+                        'Author: ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        book.author,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
                   trailing: buildPopupMenuButton(book, bookProvider),
+                  textColor: kColorScheme.onSecondary,
+                  iconColor: kColorScheme.onSecondary,
                 ),
               ),
             );
@@ -91,6 +150,19 @@ class _LibraryScreenState extends State<LibraryScreen>
         bottom: TabBar(
           controller: _tabController,
           tabs: categories.map((category) => Tab(text: category)).toList(),
+          labelColor: kColorScheme.onSecondary,
+          unselectedLabelColor: Colors.white54,
+          automaticIndicatorColorAdjustment: true,
+          dividerColor: Colors.yellowAccent,
+          dividerHeight: 3.0,
+          isScrollable: true,
+          indicatorWeight: 5,
+          indicatorColor: Colors.amber,
+          indicatorSize: TabBarIndicatorSize.tab,
+          labelStyle: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         actions: [
           IconButton(
@@ -111,11 +183,13 @@ class _LibraryScreenState extends State<LibraryScreen>
             .map((category) => _buildCategoryListView(category))
             .toList(),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           _addBooks();
         },
-        child: const Icon(Icons.add),
+        backgroundColor: kColorScheme.secondaryContainer,
+        label: const Text('Add Book'),
+        icon: const Icon(Icons.add),
       ),
     );
   }
