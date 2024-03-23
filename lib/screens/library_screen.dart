@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:my_book_lib/main.dart';
 import 'package:my_book_lib/model/book.dart';
 import 'package:my_book_lib/model/book_provider.dart';
 import 'package:my_book_lib/screens/favourite_screen.dart';
@@ -17,11 +16,65 @@ class LibraryScreen extends StatefulWidget {
   State<LibraryScreen> createState() => _LibraryScreenState();
 }
 
-class _LibraryScreenState extends State<LibraryScreen> {
+final List<String> categories = [
+  'Dars',
+  'Sirat',
+  'Hadis',
+  'Fiqh',
+  'Quran',
+  'Others'
+];
+
+class _LibraryScreenState extends State<LibraryScreen>
+    with SingleTickerProviderStateMixin {
   late String _filePath = '';
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _authorController = TextEditingController();
-  bool _isGridView = false;
+  String _selectedCategory = 'Dars';
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: categories.length, vsync: this);
+  }
+
+  Widget _buildCategoryListView(String category) {
+    return Consumer<BookProvider>(
+      builder: (context, bookProvider, child) {
+        bookProvider.loadBooks();
+        final categoryBooks = bookProvider.books
+            .where((book) => book.category == category)
+            .toList();
+        return ListView.builder(
+          itemCount: categoryBooks.length,
+          itemBuilder: (context, index) {
+            final book = categoryBooks[index];
+            return Card(
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PdfViewerScreen(
+                        pdfPath: book.path,
+                        book: book,
+                      ),
+                    ),
+                  );
+                },
+                child: ListTile(
+                  title: Text(book.name),
+                  subtitle: Text(book.author),
+                  trailing: buildPopupMenuButton(book, bookProvider),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +88,11 @@ class _LibraryScreenState extends State<LibraryScreen> {
             fontSize: 24,
           ),
         ),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: categories.map((category) => Tab(text: category)).toList(),
+        ),
         actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                _isGridView = !_isGridView;
-              });
-            },
-            icon: Icon(
-              _isGridView ? Icons.list_rounded : Icons.grid_view_rounded,
-            ),
-          ),
           IconButton(
             icon: const Icon(Icons.favorite),
             onPressed: () {
@@ -58,207 +105,18 @@ class _LibraryScreenState extends State<LibraryScreen> {
           ),
         ],
       ),
-      body: _isGridView ? _buildGridView() : _buildListView(),
+      body: TabBarView(
+        controller: _tabController,
+        children: categories
+            .map((category) => _buildCategoryListView(category))
+            .toList(),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _addBooks();
         },
         child: const Icon(Icons.add),
       ),
-    );
-  }
-
-  Widget _buildGridView() {
-    return Consumer<BookProvider>(
-      builder: (context, bookProvider, child) {
-        bookProvider.loadBooks();
-        return GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 2.0,
-            mainAxisSpacing: 2.0,
-          ),
-          itemCount: bookProvider.books.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 2.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 2,
-                    color: kColorScheme.onPrimaryContainer,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Card(
-                  elevation: 5.0,
-                  color: kColorScheme.onPrimaryContainer,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PdfViewerScreen(
-                            pdfPath: bookProvider.books[index].path,
-                            book: bookProvider.books[index],
-                          ),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                          color: kColorScheme.onPrimary,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 4, left: 4, right: 4),
-                            child: AspectRatio(
-                              aspectRatio: 16 / 9,
-                              child: Image.asset(
-                                'assets/book.png',
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                          const Expanded(
-                            child: SizedBox(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 2),
-                            child: Column(
-                              children: [
-                                Text(
-                                  bookProvider.books[index].name,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: kColorScheme.onPrimary,
-                                  ),
-                                ),
-                                Text(
-                                  bookProvider.books[index].author,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                    color: kColorScheme.onPrimary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildListView() {
-    return Consumer<BookProvider>(
-      builder: (context, bookProvider, child) {
-        bookProvider.loadBooks();
-        return ListView.builder(
-          itemCount: bookProvider.books.length,
-          itemBuilder: (context, index) {
-            return Container(
-              margin: const EdgeInsets.only(left: 4, right: 4, top: 4),
-              width: 3,
-              decoration: BoxDecoration(
-                color: kColorScheme.onPrimaryContainer,
-                borderRadius: BorderRadius.circular(10),
-                border: const Border(
-                  bottom: BorderSide(color: Colors.white, width: 2),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 2.0, right: 2.0),
-                child: Card(
-                  elevation: 5.0,
-                  child: ListTile(
-                    tileColor: kColorScheme.onPrimaryContainer,
-                    title: Row(
-                      children: [
-                        Text(
-                          "Book: ",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: kColorScheme.onPrimary,
-                            fontSize: 18,
-                          ),
-                        ),
-                        Text(
-                          bookProvider.books[index].name.length > 25
-                              ? '${bookProvider.books[index].name.substring(0, 22)}...'
-                              : bookProvider.books[index].name,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: kColorScheme.onPrimary,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    ),
-                    subtitle: Row(
-                      children: [
-                        Text(
-                          'Author: ',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: kColorScheme.onPrimary,
-                          ),
-                        ),
-                        Text(
-                          bookProvider.books[index].author.length > 30
-                              ? '${bookProvider.books[index].author}...'
-                              : bookProvider.books[index].author,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: kColorScheme.onPrimary,
-                          ),
-                        ),
-                      ],
-                    ),
-                    leading: Image.asset(
-                      'assets/book.png',
-                    ),
-                    trailing: buildPopupMenuButton(
-                      bookProvider.books[index],
-                      bookProvider,
-                    ),
-                    iconColor: kColorScheme.onPrimary,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PdfViewerScreen(
-                            pdfPath: bookProvider.books[index].path,
-                            book: bookProvider.books[index],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      },
     );
   }
 
@@ -276,12 +134,36 @@ class _LibraryScreenState extends State<LibraryScreen> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 TextField(
+                  maxLength: 30,
                   controller: _nameController,
                   decoration: const InputDecoration(labelText: 'Book Name'),
                 ),
                 TextField(
+                  maxLength: 25,
                   controller: _authorController,
                   decoration: const InputDecoration(labelText: 'Author Name'),
+                ),
+                DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(labelText: 'Category'),
+                  value: _selectedCategory,
+                  items: [
+                    'Dars',
+                    'Sirat',
+                    'Hadis',
+                    'Fiqh',
+                    'Quran',
+                    'Others',
+                  ].map((String category) {
+                    return DropdownMenuItem<String>(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _selectedCategory = value!;
+                    });
+                  },
                 ),
                 const SizedBox(height: 16.0),
                 Row(
@@ -318,7 +200,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
         } else if (value == 'delete') {
           _deleteBook(context, bookProvider, book);
         } else if (value == 'addToFavorites') {
-          _addToFavorites(context, bookProvider, book);
+          bookProvider.toggleFavorite(book.id);
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -372,6 +254,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
           name: name,
           author: author,
           path: _filePath,
+          category: _selectedCategory,
           id: _generateRandomID()));
       Navigator.pop(context);
     } else {
@@ -412,10 +295,5 @@ class _LibraryScreenState extends State<LibraryScreen> {
         ],
       ),
     );
-  }
-
-  void _addToFavorites(
-      BuildContext context, BookProvider bookProvider, Book book) {
-    bookProvider.toggleFavorite(book.id);
   }
 }

@@ -23,6 +23,12 @@ class BookProvider extends ChangeNotifier {
   }
 
   void toggleFavorite(String id) {
+    // int index = _books.indexWhere((book) => book.id == id);
+    // if (index != -1) {
+    //   _books[index].isFavorite = !_books[index].isFavorite;
+    //   saveBooks();
+    //   notifyListeners();
+    // }
     int index = _books.indexWhere((book) => book.id == id);
     if (index != -1) {
       _books[index].isFavorite = !_books[index].isFavorite;
@@ -33,15 +39,10 @@ class BookProvider extends ChangeNotifier {
 
   Future<void> saveBooks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList(
-      'books',
-      _books
-          .map(
-            (book) =>
-                "${book.id}|${book.name}|${book.author}|${book.path}|${book.isFavorite ? '1' : '0'}|${book.lastReadPage}",
-          )
-          .toList(),
-    );
+    List<String> bookStrings = _books.map((book) {
+      return "${book.id}|${book.name}|${book.author}|${book.path}|${book.isFavorite ? '1' : '0'}|${book.lastReadPage}|${book.category}";
+    }).toList();
+    await prefs.setStringList('books', bookStrings);
   }
 
   Future<void> loadBooks() async {
@@ -51,12 +52,14 @@ class BookProvider extends ChangeNotifier {
       _books = bookStrings.map((bookString) {
         List<String> parts = bookString.split('|');
         return Book(
-            id: parts[0],
-            name: parts[1],
-            author: parts[2],
-            path: parts[3],
-            isFavorite: parts[4] == '1',
-            lastReadPage: int.parse(parts[5]));
+          id: parts[0],
+          name: parts[1],
+          author: parts[2],
+          path: parts[3],
+          isFavorite: parts[4] == '1',
+          lastReadPage: int.parse(parts[5]),
+          category: parts[6],
+        );
       }).toList();
       notifyListeners();
     }
