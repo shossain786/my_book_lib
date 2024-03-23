@@ -87,7 +87,27 @@ class FavoritesScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  leading: Image.asset('assets/Fav_book.png'),
+                  leading: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.yellowAccent,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(
+                        'assets/Fav_book.png',
+                        width: 50,
+                        height: 50,
+                      ),
+                    ),
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_circle_right,
+                    color: Colors.yellowAccent,
+                  ),
                   onTap: () {
                     Navigator.push(
                       context,

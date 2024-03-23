@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:my_book_lib/main.dart';
 import 'package:my_book_lib/screens/waqia_details.dart';
 
 class WaqiasScreen extends StatefulWidget {
@@ -76,7 +77,10 @@ class _WaqiasScreenState extends State<WaqiasScreen> {
                       backgroundColor: Colors.orange.shade600,
                       child: const Icon(Icons.circle_outlined),
                     ),
-                    trailing: const Icon(Icons.arrow_right_alt),
+                    trailing: Icon(
+                      Icons.arrow_circle_right,
+                      color: kColorScheme.onPrimaryContainer,
+                    ),
                   ),
                 );
               },

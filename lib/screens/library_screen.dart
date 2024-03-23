@@ -71,11 +71,10 @@ class _LibraryScreenState extends State<LibraryScreen>
                   leading: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(width: 2),
-                      color: kColorScheme.onPrimaryContainer,
+                      border: Border.all(width: 2, color: Colors.yellowAccent),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(8),
                       child: Image.asset(
                         'assets/book.jpg',
                         fit: BoxFit.cover,
@@ -99,7 +98,7 @@ class _LibraryScreenState extends State<LibraryScreen>
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        book.lastReadPage.toString(),
+                        book.timesOpened.toString(),
                         style: const TextStyle(
                           fontSize: 20,
                         ),
@@ -187,8 +186,15 @@ class _LibraryScreenState extends State<LibraryScreen>
         onPressed: () {
           _addBooks();
         },
+        elevation: 5,
         backgroundColor: kColorScheme.secondaryContainer,
-        label: const Text('Add Book'),
+        foregroundColor: kColorScheme.onPrimaryContainer,
+        label: const Text(
+          'Add Book',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         icon: const Icon(Icons.add),
       ),
     );
@@ -208,36 +214,51 @@ class _LibraryScreenState extends State<LibraryScreen>
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 TextField(
-                  maxLength: 30,
+                  maxLength: 40,
                   controller: _nameController,
                   decoration: const InputDecoration(labelText: 'Book Name'),
                 ),
-                TextField(
-                  maxLength: 25,
-                  controller: _authorController,
-                  decoration: const InputDecoration(labelText: 'Author Name'),
-                ),
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(labelText: 'Category'),
-                  value: _selectedCategory,
-                  items: [
-                    'Dars',
-                    'Sirat',
-                    'Hadis',
-                    'Fiqh',
-                    'Quran',
-                    'Others',
-                  ].map((String category) {
-                    return DropdownMenuItem<String>(
-                      value: category,
-                      child: Text(category),
-                    );
-                  }).toList(),
-                  onChanged: (String? value) {
-                    setState(() {
-                      _selectedCategory = value!;
-                    });
-                  },
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _authorController,
+                        decoration:
+                            const InputDecoration(labelText: 'Author Name'),
+                      ),
+                    ),
+                    const SizedBox(width: 16.0),
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        dropdownColor: const Color.fromARGB(235, 233, 198, 198),
+                        decoration: const InputDecoration(
+                          labelText: 'Category',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                          ),
+                        ),
+                        value: _selectedCategory,
+                        items: [
+                          'Dars',
+                          'Sirat',
+                          'Hadis',
+                          'Fiqh',
+                          'Quran',
+                          'Others',
+                        ].map((String category) {
+                          return DropdownMenuItem<String>(
+                            value: category,
+                            child: Text(category),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          setState(() {
+                            _selectedCategory = value!;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16.0),
                 Row(
