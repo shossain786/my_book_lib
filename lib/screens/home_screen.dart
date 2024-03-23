@@ -166,19 +166,22 @@ class LibraryBooksSection extends StatelessWidget {
                       Card(
                         color: kColorScheme.onPrimaryContainer,
                         elevation: 5,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Image.asset(
-                                // 'assets/${libraryBooks[index].imagePath}',
-                                'assets/book.jpg',
-                                width: 100,
-                                height: 100,
-                              ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: kColorScheme.onPrimaryContainer,
+                              width: 2,
                             ),
-                            const SizedBox(height: 2),
-                          ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                              'assets/book.jpg',
+                              width: 100,
+                              height: 100,
+                            ),
+                          ),
                         ),
                       ),
                       Text(
@@ -196,7 +199,7 @@ class LibraryBooksSection extends StatelessWidget {
                             ? '${libraryBooks[index].author.substring(0, 14)}...'
                             : libraryBooks[index].author,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontWeight: FontWeight.w400),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -244,20 +247,45 @@ class FavoriteBooksSection extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
-                  title: Text(
-                    favoriteBooks[index].name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  title: Row(
+                    children: [
+                      const Text(
+                        'Name: ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        favoriteBooks[index].name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
-                  subtitle: Text(favoriteBooks[index].author),
+                  subtitle: Row(
+                    children: [
+                      const Text(
+                        'Author: ',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        favoriteBooks[index].author,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_circle_right,
+                    color: kColorScheme.onPrimaryContainer,
+                  ),
                   leading: Column(
                     children: [
                       Container(
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.black, // Border color
-                            width: 2, // Border width
+                            color: kColorScheme.onPrimaryContainer,
+                            width: 2,
                           ),
                           borderRadius: BorderRadius.circular(5),
                         ),

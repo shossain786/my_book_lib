@@ -19,9 +19,9 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
       onTap: _onItemTapped,
       currentIndex: _selectedIndex,
       unselectedFontSize: 15,
-      selectedFontSize: 18,
-      unselectedItemColor: Colors.orange,
-      selectedItemColor: Colors.blue,
+      selectedFontSize: 16,
+      unselectedItemColor: kColorScheme.primaryContainer,
+      selectedItemColor: kColorScheme.onPrimary,
       showSelectedLabels: true,
       showUnselectedLabels: true,
       items: <BottomNavigationBarItem>[
@@ -36,7 +36,7 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
           backgroundColor: kColorScheme.onPrimaryContainer,
         ),
         BottomNavigationBarItem(
-          icon: const Icon(Icons.book_online),
+          icon: const Icon(Icons.star),
           label: 'Dilchasp Waqiat',
           backgroundColor: kColorScheme.onPrimaryContainer,
         ),
