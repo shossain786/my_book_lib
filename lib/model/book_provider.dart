@@ -64,4 +64,9 @@ class BookProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void updateBookOrder(List<Book> newOrder) {
+    _books = newOrder;
+    notifyListeners();
+  }
 }
