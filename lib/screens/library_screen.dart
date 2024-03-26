@@ -99,13 +99,6 @@ class _LibraryScreenState extends State<LibraryScreen>
                           fontSize: 20,
                         ),
                       ),
-                      // const SizedBox(width: 20),
-                      // Text(
-                      //   book.timesOpened.toString(),
-                      //   style: const TextStyle(
-                      //     fontSize: 20,
-                      //   ),
-                      // ),
                     ],
                   ),
                   subtitle: Row(

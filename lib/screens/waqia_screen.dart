@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:my_book_lib/main.dart';
 import 'package:my_book_lib/screens/waqia_json_details.dart';
 
 class WaqiasScreen extends StatefulWidget {
@@ -33,6 +33,7 @@ class _WaqiasScreenState extends State<WaqiasScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Dilchasp Waqiat'),
       ),
       body: FutureBuilder<List<dynamic>>(
@@ -52,39 +53,61 @@ class _WaqiasScreenState extends State<WaqiasScreen> {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final waqia = items[index];
-                return Card(
-                  child: ListTile(
-                    trailing: const Icon(FontAwesomeIcons.circleArrowRight),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => WaqiaDetailsScreen(
-                            title: waqia['title'],
-                            urdu: waqia['urdu'],
-                            waqia: waqia['waqia'],
-                            hawala: waqia['hawala'],
+                return Padding(
+                  padding: const EdgeInsets.only(left: 2, right: 2),
+                  child: Card(
+                    elevation: 5.0,
+                    color: kColorScheme.onPrimaryContainer,
+                    shadowColor: Colors.yellowAccent,
+                    child: ListTile(
+                      trailing: const Icon(
+                        Icons.arrow_circle_right,
+                        color: Colors.yellowAccent,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WaqiaDetailsScreen(
+                              title: waqia['title'],
+                              urdu: waqia['urdu'],
+                              waqia: waqia['waqia'],
+                              hawala: waqia['hawala'],
+                            ),
+                          ),
+                        );
+                      },
+                      title: Text(
+                        waqia['title'],
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: kColorScheme.onPrimary,
+                        ),
+                      ),
+                      subtitle: Text(
+                        waqia['urdu'],
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: kColorScheme.onPrimary,
+                        ),
+                      ),
+                      leading: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.yellowAccent,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
+                            'assets/wqa.jpeg',
+                            width: 50,
+                            height: 50,
                           ),
                         ),
-                      );
-                    },
-                    title: Text(
-                      waqia['title'],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      waqia['urdu'],
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    leading: const CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.orange,
-                      child: Icon(
-                        FontAwesomeIcons.message,
-                        size: 40,
                       ),
                     ),
                   ),

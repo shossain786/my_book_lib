@@ -71,6 +71,7 @@ flutter:
     - assets/book.jpg
     - assets/Fav_book.png
     - assets/books_logo.png
+    - assets/wqa.jpeg
 
 
 flutter_icons: 

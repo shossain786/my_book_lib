@@ -42,6 +42,7 @@ class FavoritesScreen extends StatelessWidget {
               child: Card(
                 elevation: 5.0,
                 color: kColorScheme.onPrimaryContainer,
+                shadowColor: Colors.yellowAccent,
                 child: ListTile(
                   title: Row(
                     children: [
