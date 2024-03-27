@@ -23,12 +23,6 @@ class BookProvider extends ChangeNotifier {
   }
 
   void toggleFavorite(String id) {
-    // int index = _books.indexWhere((book) => book.id == id);
-    // if (index != -1) {
-    //   _books[index].isFavorite = !_books[index].isFavorite;
-    //   saveBooks();
-    //   notifyListeners();
-    // }
     int index = _books.indexWhere((book) => book.id == id);
     if (index != -1) {
       _books[index].isFavorite = !_books[index].isFavorite;
@@ -65,8 +59,25 @@ class BookProvider extends ChangeNotifier {
     }
   }
 
-  void updateBookOrder(List<Book> newOrder) {
+  Future<void> updateFavoriteBookOrder(List<Book> newOrder) async {
+    List<Book> updatedBooks = [];
+    for (Book book in _books) {
+      if (book.isFavorite) {
+        if (newOrder.isNotEmpty) {
+          updatedBooks.add(newOrder.removeAt(0));
+        }
+      } else {
+        updatedBooks.add(book);
+      }
+    }
+    _books = updatedBooks;
+    await saveBooks();
+    notifyListeners();
+  }
+
+  Future<void> updateBookOrder(List<Book> newOrder) async {
     _books = newOrder;
+    await saveBooks();
     notifyListeners();
   }
 }
