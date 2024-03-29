@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_book_lib/main.dart';
 import 'package:my_book_lib/model/book.dart';
 import 'package:my_book_lib/model/book_provider.dart';
-import 'package:my_book_lib/screens/favourite_screen.dart';
 import 'package:my_book_lib/screens/pdf_viewer_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -159,18 +158,6 @@ class _LibraryScreenState extends State<LibraryScreen>
             fontWeight: FontWeight.w600,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.favorite),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const FavoritesScreen()),
-              );
-            },
-          ),
-        ],
       ),
       body: TabBarView(
         controller: _tabController,
