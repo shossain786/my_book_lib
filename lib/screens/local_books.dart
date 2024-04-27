@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalPdfBooks extends StatefulWidget {
   const LocalPdfBooks({super.key});
@@ -18,19 +19,34 @@ class _LocalPdfBooksState extends State<LocalPdfBooks> {
   @override
   void initState() {
     super.initState();
-    _fetchPdfFiles();
+    _loadPdfFiles();
   }
 
-  Future<void> _fetchPdfFiles() async {
+  Future<void> _loadPdfFiles() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? savedFiles = prefs.getStringList('pdf_files');
+    if (savedFiles != null) {
+      setState(() {
+        _pdfFiles = savedFiles;
+      });
+    }
+  }
+
+  Future<void> _fetchAndAddNewPdfFiles() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
     );
     if (result != null) {
-      List<String> filePaths = result.paths.map((path) => path!).toList();
-      setState(() {
-        _pdfFiles = filePaths;
-      });
+      List<String> newFiles = result.paths.map((path) => path!).toList();
+      for (var newFile in newFiles) {
+        if (!_pdfFiles.contains(newFile)) {
+          _pdfFiles.add(newFile);
+        }
+      }
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setStringList('pdf_files', _pdfFiles);
+      setState(() {});
     }
   }
 
@@ -41,10 +57,12 @@ class _LocalPdfBooksState extends State<LocalPdfBooks> {
         title: const Text('PDF Viewer'),
       ),
       body: _pdfFiles == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
           : GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+                crossAxisCount: 3,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
               ),
@@ -62,13 +80,19 @@ class _LocalPdfBooksState extends State<LocalPdfBooks> {
                   },
                   child: Card(
                     child: Center(
-                      child: Text(_pdfFiles[index]
-                          .substring(_pdfFiles[index].lastIndexOf('/') + 1)),
+                      child: Text(
+                        _pdfFiles[index]
+                            .substring(_pdfFiles[index].lastIndexOf('/') + 1),
+                      ),
                     ),
                   ),
                 );
               },
             ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _fetchAndAddNewPdfFiles,
+        label: const Text('Load All PDF Files'),
+      ),
     );
   }
 }
