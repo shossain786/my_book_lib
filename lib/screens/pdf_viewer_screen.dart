@@ -59,11 +59,11 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           children: [
             PDFView(
               filePath: widget.pdfPath,
-              // autoSpacing: true,
               enableSwipe: true,
-              // fitEachPage: true,
-              // fitPolicy: FitPolicy.WIDTH,
               nightMode: nightMode,
+              autoSpacing: false,
+              pageFling: false,
+              fitPolicy: FitPolicy.WIDTH,
               onRender: (pages) {
                 setState(() {
                   pageNumber = pages!;
