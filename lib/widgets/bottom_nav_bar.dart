@@ -36,6 +36,11 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
           backgroundColor: kColorScheme.onPrimaryContainer,
         ),
         BottomNavigationBarItem(
+          icon: const Icon(Icons.picture_as_pdf),
+          label: 'All PDFs',
+          backgroundColor: kColorScheme.onPrimaryContainer,
+        ),
+        BottomNavigationBarItem(
           icon: const Icon(Icons.star),
           label: 'Dilchasp Waqiat',
           backgroundColor: kColorScheme.onPrimaryContainer,
@@ -56,6 +61,9 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
         Navigator.pushNamed(context, '/myFavouriteBooks');
         break;
       case 2:
+        Navigator.pushNamed(context, '/local_books');
+        break;
+      case 3:
         Navigator.pushNamed(context, '/waqia_json');
         break;
     }

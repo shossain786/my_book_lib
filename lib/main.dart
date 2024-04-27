@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_book_lib/screens/favourite_screen.dart';
 import 'package:my_book_lib/screens/library_screen.dart';
 import 'package:my_book_lib/model/book_provider.dart';
+import 'package:my_book_lib/screens/local_books.dart';
 import 'package:my_book_lib/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +41,7 @@ void main() {
         routes: {
           '/myLibrary': (context) => const LibraryScreen(),
           '/myFavouriteBooks': (context) => const FavoritesScreen(),
-          // '/waqias': (context) => const WaqiasScreen(),
+          '/local_books': (context) => const LocalPdfBooks(),
           '/waqia_json': (context) => const WaqiasScreen(),
         },
       ),
