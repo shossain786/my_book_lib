@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:my_book_lib/main.dart';
 import 'package:my_book_lib/screens/local_pdf_view.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,29 +64,59 @@ class _LocalPdfBooksState extends State<LocalPdfBooks> {
         title: const Text('PDF Viewer'),
       ),
       body: _pdfFiles.isEmpty
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child:
+                  Text('No books added. You can add books from below button.'),
+            )
           : ReorderableGridView.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10.0,
-              crossAxisSpacing: 10.0,
+              crossAxisCount: 3,
+              mainAxisSpacing: 6.0,
+              crossAxisSpacing: 6.0,
               children: _pdfFiles
                   .map(
-                    (pdfPath) => GestureDetector(
-                      key: ValueKey(pdfPath),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                PdfViewerPage(pdfPath: pdfPath),
+                    (pdfPath) => Dismissible(
+                      key: Key(pdfPath),
+                      direction: DismissDirection.startToEnd,
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerLeft,
+                        child: const Padding(
+                          padding: EdgeInsets.only(left: 20.0),
+                          child: Icon(
+                            Icons.delete,
+                            color: Colors.white,
                           ),
-                        );
+                        ),
+                      ),
+                      onDismissed: (direction) {
+                        setState(() {
+                          _pdfFiles.remove(pdfPath);
+                          _savePdfFilesOrder();
+                        });
                       },
-                      child: Card(
-                        key: ValueKey(pdfPath),
-                        child: Center(
-                          child: Text(
-                            pdfPath.substring(pdfPath.lastIndexOf('/') + 1),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  PdfViewerPage(pdfPath: pdfPath),
+                            ),
+                          );
+                        },
+                        child: Card(
+                          key: ValueKey(pdfPath),
+                          elevation: 10.0,
+                          shadowColor: Colors.yellowAccent,
+                          color: kColorScheme.onPrimaryContainer,
+                          child: Center(
+                            child: Text(
+                              pdfPath.substring(pdfPath.lastIndexOf('/') + 1),
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -107,7 +138,7 @@ class _LocalPdfBooksState extends State<LocalPdfBooks> {
             ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _fetchAndAddNewPdfFiles,
-        label: const Text('Load All PDF Files'),
+        label: const Text('Show All PDF Files'),
       ),
     );
   }
