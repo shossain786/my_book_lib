@@ -64,24 +64,33 @@ class _LocalPdfBooksState extends State<LocalPdfBooks> {
         title: const Text('PDF Viewer'),
       ),
       body: _pdfFiles.isEmpty
-          ? const Center(
-              child:
-                  Text('No books added. You can add books from below button.'),
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  'No books added! You can add books from below button.',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: kColorScheme.onPrimaryContainer,
+                  ),
+                ),
+              ),
             )
           : ReorderableGridView.count(
               crossAxisCount: 3,
-              mainAxisSpacing: 6.0,
-              crossAxisSpacing: 6.0,
+              mainAxisSpacing: 4.0,
+              crossAxisSpacing: 2.0,
               children: _pdfFiles
                   .map(
                     (pdfPath) => Dismissible(
                       key: Key(pdfPath),
-                      direction: DismissDirection.startToEnd,
+                      direction: DismissDirection.horizontal,
                       background: Container(
                         color: Colors.red,
                         alignment: Alignment.centerLeft,
                         child: const Padding(
-                          padding: EdgeInsets.only(left: 20.0),
+                          padding: EdgeInsets.only(left: 3.0),
                           child: Icon(
                             Icons.delete,
                             color: Colors.white,
@@ -110,11 +119,28 @@ class _LocalPdfBooksState extends State<LocalPdfBooks> {
                           shadowColor: Colors.yellowAccent,
                           color: kColorScheme.onPrimaryContainer,
                           child: Center(
-                            child: Text(
-                              pdfPath.substring(pdfPath.lastIndexOf('/') + 1),
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.yellow,
+                                  width: 2.0,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              margin: const EdgeInsets.all(2.0),
+                              child: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Text(
+                                  pdfPath.substring(
+                                    pdfPath.lastIndexOf('/') + 1,
+                                    pdfPath.lastIndexOf('.'),
+                                  ),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: kColorScheme.onSecondary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -139,6 +165,7 @@ class _LocalPdfBooksState extends State<LocalPdfBooks> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _fetchAndAddNewPdfFiles,
         label: const Text('Show All PDF Files'),
+        icon: const Icon(Icons.picture_as_pdf_outlined),
       ),
     );
   }

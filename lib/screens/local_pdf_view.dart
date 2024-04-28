@@ -24,11 +24,11 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
           PDFView(
             filePath: widget.pdfPath,
             nightMode: nightMode,
-            enableSwipe: false,
+            enableSwipe: true,
             swipeHorizontal: false,
             autoSpacing: false,
             pageFling: false,
-            // fitPolicy: FitPolicy.WIDTH,
+            fitPolicy: FitPolicy.WIDTH,
           ),
         ],
       ),
